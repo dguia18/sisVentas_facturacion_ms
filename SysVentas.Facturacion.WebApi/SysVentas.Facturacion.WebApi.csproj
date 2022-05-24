@@ -7,7 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR" Version="10.0.1" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.5" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SysVentas.Facturation.Application\SysVentas.Facturation.Application.csproj" />
+      <ProjectReference Include="..\SysVentas.Facturation.Infrastructure.Data\SysVentas.Facturation.Infrastructure.Data.csproj" />
     </ItemGroup>
 
 </Project>
