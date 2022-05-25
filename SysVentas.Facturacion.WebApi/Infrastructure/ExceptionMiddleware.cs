@@ -1,14 +1,17 @@
 ﻿using System.Net;
 using SysVentas.Facturation.Application.Base;
+using SysVentas.Facturation.Infrastructure.HttpServices.Base;
 namespace SysVentas.Facturacion.WebApi.Infrastructure;
 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger _logger;
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next,ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
@@ -20,18 +23,25 @@ public class ExceptionMiddleware
         catch (SysVentasApplicationException ex)
         {
             await HandleExceptionAsync(httpContext, ex);
+            _logger.LogError(ex.Message);
         }
-        catch (Exception)
+        catch (HttpServicesException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex);
+            _logger.LogError(ex.Message);
+        }
+        catch (Exception ex)
         {
             await HandleExceptionAsync(httpContext);
+            _logger.LogError(ex.Message);
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, SysVentasApplicationException exception)
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-
+        
         return context.Response.WriteAsync(new
         {
             StatusCode = context.Response.StatusCode,

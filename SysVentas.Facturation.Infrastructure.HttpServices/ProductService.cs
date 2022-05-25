@@ -15,6 +15,9 @@ public class ProductService : IProductService
     public async Task UpdateStock(UpdateStockRequest request)
     {
         var response = await _httpClient.PutHttpAsync(_apiUrls.ProductsUrl + "stocks", request);
-        response.EnsureSuccessStatusCode();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpServicesException($"{response.RequestMessage}");
+        }
     }
 }
