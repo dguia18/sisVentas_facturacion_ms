@@ -23,12 +23,10 @@ public class ExceptionMiddleware
         catch (SysVentasApplicationException ex)
         {
             await HandleExceptionAsync(httpContext, ex);
-            _logger.LogError(ex.Message);
         }
         catch (HttpServicesException ex)
         {
             await HandleExceptionAsync(httpContext, ex);
-            _logger.LogError(ex.Message);
         }
         catch (Exception ex)
         {
