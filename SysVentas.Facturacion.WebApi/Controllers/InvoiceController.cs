@@ -18,6 +18,12 @@ public class InvoiceController : Controller
         var response = await _mediator.Send(request);
         return  Ok(response);
     }
+    [HttpPut("{id:long}/canceled")]
+    public async Task<IActionResult> Cancel(long id)
+    {
+        var response = await _mediator.Send(new CancelInvoice.Request(id));
+        return  Ok(response);
+    }
     [HttpGet]
     public async Task<IActionResult> Get()
     {

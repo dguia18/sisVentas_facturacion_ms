@@ -54,13 +54,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             query = query.Where(filter);
         }
 
-        foreach (var includeProperty in includeProperties.Split(new[]
-                 {
-                     ','
-                 }, StringSplitOptions.RemoveEmptyEntries))
-        {
-            query = query.Include(includeProperty);
-        }
+        query = IncludingProperties(includeProperties, query);
 
         if (orderBy != null)
         {
@@ -72,10 +66,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
     }
 
-    public T? FindFirstOrDefault(Expression<Func<T, bool>> predicate)
+    public T? FindFirstOrDefault(Expression<Func<T, bool>> predicate, string includeProperties = "")
     {
-        var query = Dbset.FirstOrDefault(predicate);
-        return query;
+        var query = Dbset.AsQueryable();
+        query = IncludingProperties(includeProperties, query);
+        return query.FirstOrDefault(predicate);
+    }
+    private static IQueryable<T> IncludingProperties(string includeProperties, IQueryable<T> query)
+    {
+        return includeProperties.Split(new[]
+            {
+                ','
+            }, StringSplitOptions.RemoveEmptyEntries)
+            .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
     }
     public virtual void Add(T entity)
     {

@@ -26,6 +26,10 @@ public class InvoiceMaster : Entity<long>
         Total += detail.Total;
         Details.Add(detail);
     }
+    public void Cancel()
+    {
+        Status = InvoiceMasterStatus.Canceled;
+    }
 }
 public enum InvoiceMasterStatus
 {

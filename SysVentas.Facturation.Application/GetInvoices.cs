@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using MediatR;
+﻿using MediatR;
 using SysVentas.Facturacion.Domain;
 using SysVentas.Facturacion.Domain.Contracts;
 namespace SysVentas.Facturation.Application;

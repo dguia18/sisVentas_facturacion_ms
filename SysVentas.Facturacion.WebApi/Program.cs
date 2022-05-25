@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SysVentas.Facturacion.Domain.Contracts;
 using SysVentas.Facturacion.Domain.Services;
+using SysVentas.Facturacion.WebApi.Infrastructure;
 using SysVentas.Facturation.Infrastructure.Data;
 using SysVentas.Facturation.Infrastructure.Data.Base;
 using SysVentas.Facturation.Infrastructure.HttpServices;
@@ -20,7 +21,7 @@ builder.Services.AddDbContext<FacturationDataContext>(options => options.UseInMe
 builder.Services.AddScoped<IDbContext, FacturationDataContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<IProductService,ProductService>();
+builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddMediatR(Assembly.Load("SysVentas.Facturation.Application"));
 builder.Services.Configure<IProductService.ApisUrl>(
     opts => builder.Configuration.GetSection("ApiUrls").Bind(opts)
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -3,7 +3,10 @@
 public interface IProductService
 {
     Task UpdateStock(UpdateStockRequest request);
-    public record ApisUrl(string ProductsUrl);
+    public class ApisUrl
+    {
+        public string ProductsUrl { get; set; }
+    }
 }
 public record UpdateStockRequest(IEnumerable<Items> Products);
-public record Items(long ProductId,decimal Quantity);
+public record Items(long ProductId, decimal Quantity);

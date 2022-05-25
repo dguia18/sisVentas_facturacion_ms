@@ -13,7 +13,8 @@ public interface IGenericRepository<T> where T : BaseEntity
 
     IEnumerable<T> GetAll();
 
-    T? FindFirstOrDefault(Expression<Func<T, bool>> predicate);
+    T? FindFirstOrDefault(Expression<Func<T, bool>> predicate,
+        string includeProperties = "");
 
     IEnumerable<T> FindBy(Expression<Func<T, bool>> predicate);
 
