@@ -1,14 +1,17 @@
 ﻿using MediatR;
 using SysVentas.Facturacion.Domain;
 using SysVentas.Facturacion.Domain.Contracts;
+using SysVentas.Facturacion.Domain.Services;
 namespace SysVentas.Facturation.Application;
 
 public class CreateInvoice : IRequestHandler<CreateInvoice.Request,CreateInvoice.Response>
 {
     private readonly IUnitOfWork _unitOfWork;
-    public CreateInvoice(IUnitOfWork unitOfWork)
+    private readonly IProductService _productService;
+    public CreateInvoice(IUnitOfWork unitOfWork,IProductService productService)
     {
         _unitOfWork = unitOfWork;
+        _productService = productService;
     }
     public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
     {
@@ -18,6 +21,7 @@ public class CreateInvoice : IRequestHandler<CreateInvoice.Request,CreateInvoice
             invoice.AddDetail(detail.ProductId,detail.Quantity,detail.Price);
         }
         _unitOfWork.GenericRepository<InvoiceMaster>().Add(invoice);
+        await _productService.UpdateStock(new UpdateStockRequest(request.Details.Select(t => new Items(t.ProductId, t.Quantity))));
         await _unitOfWork.CommitAsync();
         return new Response("Factura realizada con éxito");
     }
