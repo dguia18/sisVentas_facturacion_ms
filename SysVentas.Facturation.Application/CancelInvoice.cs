@@ -21,7 +21,7 @@ public class CancelInvoice : IRequestHandler<CancelInvoice.Request, CancelInvoic
         invoice.Cancel();
         
         await _productService
-            .UpdateStock(new UpdateStockRequest(invoice.Details.Select(t => new Items(t.ProductId, t.Quantity * -1))));
+            .UpdateStock(new UpdateStockRequest(invoice.Details.Select(t => new Items(t.ProductId, t.Quantity))));
         
         return new Response(Messages.CancelInvoice_Handle_Invoice_cancelled_successfully);
     }

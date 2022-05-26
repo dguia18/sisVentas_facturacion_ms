@@ -21,7 +21,7 @@ public class CreateInvoice : IRequestHandler<CreateInvoice.Request,CreateInvoice
             invoice.AddDetail(detail.ProductId,detail.Quantity,detail.Price);
         }
         _unitOfWork.GenericRepository<InvoiceMaster>().Add(invoice);
-        await _productService.UpdateStock(new UpdateStockRequest(request.Details.Select(t => new Items(t.ProductId, t.Quantity))));
+        await _productService.UpdateStock(new UpdateStockRequest(request.Details.Select(t => new Items(t.ProductId, t.Quantity * -1))));
         await _unitOfWork.CommitAsync();
         return new Response("Factura realizada con éxito");
     }
