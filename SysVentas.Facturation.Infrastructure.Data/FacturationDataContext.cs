@@ -1,6 +1,6 @@
-﻿using Infrastructure.Base;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SysVentas.Facturacion.Domain;
+using SysVentas.Facturation.Infrastructure.Data.Base;
 using SysVentas.Facturation.Infrastructure.Data.Configuration;
 namespace SysVentas.Facturation.Infrastructure.Data;
 

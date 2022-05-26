@@ -1,5 +1,4 @@
 using System.Reflection;
-using Infrastructure.Base;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SysVentas.Facturacion.Domain.Contracts;
@@ -8,6 +7,7 @@ using SysVentas.Facturacion.WebApi.Infrastructure;
 using SysVentas.Facturation.Infrastructure.Data;
 using SysVentas.Facturation.Infrastructure.Data.Base;
 using SysVentas.Facturation.Infrastructure.HttpServices;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.Services.CreateScope().ServiceProvider.GetRequiredService<FacturationDataContext>().Database.Migrate();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

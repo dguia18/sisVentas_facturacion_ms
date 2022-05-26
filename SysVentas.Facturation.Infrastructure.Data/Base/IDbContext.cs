@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-
-namespace Infrastructure.Base
+namespace SysVentas.Facturation.Infrastructure.Data.Base
 {
     public interface IDbContext
     {

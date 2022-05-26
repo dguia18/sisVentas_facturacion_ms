@@ -12,7 +12,7 @@ using SysVentas.Facturation.Infrastructure.Data;
 namespace SysVentas.Facturation.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(FacturationDataContext))]
-    [Migration("20220526043147_Initial-Create")]
+    [Migration("20220526043800_Initial-Create")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,16 +36,16 @@ namespace SysVentas.Facturation.Infrastructure.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.HasKey("Id");
 
@@ -75,7 +75,7 @@ namespace SysVentas.Facturation.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.HasKey("Id");
 

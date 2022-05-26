@@ -34,16 +34,16 @@ namespace SysVentas.Facturation.Infrastructure.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.HasKey("Id");
 
@@ -73,7 +73,7 @@ namespace SysVentas.Facturation.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(17,2)");
 
                     b.HasKey("Id");
 

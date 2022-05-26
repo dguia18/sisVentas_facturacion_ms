@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
-using Infrastructure.Base;
 using Microsoft.EntityFrameworkCore;
 using SysVentas.Facturacion.Domain.Base;
 using SysVentas.Facturacion.Domain.Contracts;
+using SysVentas.Facturation.Infrastructure.Data.Base;
 namespace SysVentas.Facturation.Infrastructure.Data.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity

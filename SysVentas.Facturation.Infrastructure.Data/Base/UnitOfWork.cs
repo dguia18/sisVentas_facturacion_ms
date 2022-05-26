@@ -1,5 +1,4 @@
-﻿using Infrastructure.Base;
-using SysVentas.Facturacion.Domain.Base;
+﻿using SysVentas.Facturacion.Domain.Base;
 using SysVentas.Facturacion.Domain.Contracts;
 using SysVentas.Facturation.Infrastructure.Data.Repositories;
 namespace SysVentas.Facturation.Infrastructure.Data.Base;
