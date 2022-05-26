@@ -20,9 +20,8 @@ public class CancelInvoice : IRequestHandler<CancelInvoice.Request, CancelInvoic
         if (invoice == null) throw new SysVentasApplicationException(Messages.CancelInvoice_Handle_Invoice_not_found);
         invoice.Cancel();
         
-        await _productService
-            .UpdateStock(new UpdateStockRequest(invoice.Details.Select(t => new Items(t.ProductId, t.Quantity))));
-        
+        // await _productService.UpdateStock(new UpdateStockRequest(invoice.Details.Select(t => new Items(t.ProductId, t.Quantity))));
+        await _unitOfWork.CommitAsync();
         return new Response(Messages.CancelInvoice_Handle_Invoice_cancelled_successfully);
     }
     private InvoiceMaster? LoadInvoice(long invoiceId)
