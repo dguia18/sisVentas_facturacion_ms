@@ -15,7 +15,7 @@ public class InvoiceDetailEntityTypeConfiguration : IEntityTypeConfiguration<Inv
 {
     public void Configure(EntityTypeBuilder<InvoiceDetail> builder)
     {
-        builder.ToTable(nameof(InvoiceMaster), FacturationDataContext.DefaultSchema);
+        builder.ToTable(nameof(InvoiceDetail), FacturationDataContext.DefaultSchema);
         builder.HasKey(t => t.Id);
         
         builder.HasOne(t => t.InvoiceMaster)

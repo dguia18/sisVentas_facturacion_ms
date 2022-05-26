@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<FacturationDataContext>(options => options.UseInMemoryDatabase("Facturation"));
+builder.Services.AddDbContext<FacturationDataContext>(options => options.UseSqlServer(builder.Configuration["ConnectionString"]));
 builder.Services.AddScoped<IDbContext, FacturationDataContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
