@@ -2,9 +2,10 @@ version: "3.3"
 services:
   web:    
     container_name: sisventas_facturacion_ms
-    image: "ivancontry/sisventas_facturacion_ms:latest"       
+    image: "duvaninho/sisventas_facturacion_ms:latest"       
     environment:
-        - ConnectionString=Server=sql.data;User=sa;Password=Pass@word;DataBase=Facturacion;
+      - ConnectionString= Server=sql.data;User=sa;Password=Pass@word;DataBase=Facturacion;
+      - ApiUrls='{"ProductsUrl":"http://localhost:20002/"}'
     ports:
       - "5001:80"
     depends_on:

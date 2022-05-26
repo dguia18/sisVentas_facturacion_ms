@@ -20,8 +20,7 @@ public class GetInvoices : IRequestHandler<GetInvoices.Request, GetInvoices.Resp
     }
     private static InvoiceMasterModelView MapMaster(InvoiceMaster t)
     {
-        return new InvoiceMasterModelView(t.ClientId, t.Date, t.StatusView, t.Total, t.Details
-            .Select(MapDetail));
+        return new InvoiceMasterModelView(t.Id, t.ClientId, t.Date, t.StatusView, t.Total, t.Details.Select(MapDetail));
     }
     private static InvoiceDetailModelView MapDetail(InvoiceDetail d)
     {
@@ -29,6 +28,6 @@ public class GetInvoices : IRequestHandler<GetInvoices.Request, GetInvoices.Resp
     }
     public record Request : IRequest<Response>;
     public record Response(IEnumerable<InvoiceMasterModelView> Invoices);
-    public record InvoiceMasterModelView(long ClientId, DateTime Date, string Status, decimal Total, IEnumerable<InvoiceDetailModelView> Details);
+    public record InvoiceMasterModelView(long Id, long ClientId, DateTime Date, string Status, decimal Total, IEnumerable<InvoiceDetailModelView> Details);
     public record InvoiceDetailModelView(long ProductId, decimal Quantity, decimal Price, decimal Total);
 }
