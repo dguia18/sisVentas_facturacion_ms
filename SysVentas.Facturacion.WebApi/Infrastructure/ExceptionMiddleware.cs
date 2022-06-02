@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using FluentValidation;
 using SysVentas.Facturation.Application.Base;
 using SysVentas.Facturation.Infrastructure.HttpServices.Base;
 namespace SysVentas.Facturacion.WebApi.Infrastructure;
@@ -8,7 +9,7 @@ public class ExceptionMiddleware
     private readonly RequestDelegate _next;
     private readonly ILogger _logger;
 
-    public ExceptionMiddleware(RequestDelegate next,ILogger<ExceptionMiddleware> logger)
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
         _logger = logger;
@@ -20,13 +21,17 @@ public class ExceptionMiddleware
         {
             await _next(httpContext);
         }
-        catch (SysVentasApplicationException ex)
+        catch (ValidationException exception)
         {
-            await HandleExceptionAsync(httpContext, ex);
+            await HandleExceptionAsync(httpContext, exception);
         }
-        catch (HttpServicesException ex)
+        catch (SysVentasApplicationException exception)
         {
-            await HandleExceptionAsync(httpContext, ex);
+            await HandleExceptionAsync(httpContext, exception);
+        }
+        catch (HttpServicesException exception)
+        {
+            await HandleExceptionAsync(httpContext, exception);
         }
         catch (Exception ex)
         {
@@ -34,28 +39,45 @@ public class ExceptionMiddleware
             _logger.LogError(ex.Message);
         }
     }
-
-    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static Task HandleExceptionAsync(HttpContext context, ValidationException exception)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-        
-        return context.Response.WriteAsync(new
+
+        var errors = exception.Errors.Select(error => new
+        {
+            error.PropertyName,
+            error.ErrorMessage
+        }).ToList();
+
+        return context.Response.WriteAsync(new ExceptionResponse
+        {
+            StatusCode = context.Response.StatusCode,
+            Message = "There are some validation errors, please check the data and perform the operation again.",
+            Errors = errors
+        }.ToString());
+    }
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+        return context.Response.WriteAsync(new ExceptionResponse()
         {
             StatusCode = context.Response.StatusCode,
             Message = exception.Message,
-        }.ToString() ?? string.Empty);
+        }.ToString());
     }
 
     private static Task HandleExceptionAsync(HttpContext context)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        
-        return context.Response.WriteAsync(new
+
+        return context.Response.WriteAsync(new ExceptionResponse
         {
             StatusCode = context.Response.StatusCode,
             Message = "There was an unexpected error"
-        }.ToString() ?? string.Empty);
+        }.ToString());
     }
 }

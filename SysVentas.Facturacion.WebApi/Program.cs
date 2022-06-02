@@ -1,4 +1,5 @@
 using System.Reflection;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SysVentas.Facturacion.Domain.Contracts;
@@ -26,6 +27,12 @@ builder.Services.AddMediatR(Assembly.Load("SysVentas.Facturation.Application"));
 builder.Services.Configure<IProductService.ApisUrl>(
     opts => builder.Configuration.GetSection("ApiUrls").Bind(opts)
 );
+builder.Services.AddTransient (typeof (IPipelineBehavior<,>), typeof (ValidatorPipelineBehavior<,>));;
+AssemblyScanner.FindValidatorsInAssembly(Assembly.Load("SysVentas.Facturation.Application")).ForEach(pair =>
+{
+    builder.Services.Add(ServiceDescriptor.Scoped(pair.InterfaceType,pair.ValidatorType));
+    builder.Services.Add(ServiceDescriptor.Scoped(pair.ValidatorType,pair.ValidatorType));
+});
 
 var app = builder.Build();
 

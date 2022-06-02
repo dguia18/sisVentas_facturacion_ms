@@ -30,4 +30,10 @@ public class InvoiceController : Controller
         var response = await _mediator.Send(new GetInvoices.Request());
         return  Ok(response);
     }
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> Get(long id)
+    {
+        var response = await _mediator.Send(new GetInvoiceById.Request(id));
+        return  Ok(response);
+    }
 }

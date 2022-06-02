@@ -16,18 +16,13 @@ public class GetInvoices : IRequestHandler<GetInvoices.Request, GetInvoices.Resp
     }
     private IEnumerable<InvoiceMaster> LoadInvoices()
     {
-        return _unitOfWork.GenericRepository<InvoiceMaster>().FindBy(includeProperties: "Details");
+        return _unitOfWork.GenericRepository<InvoiceMaster>().FindBy();
     }
     private static InvoiceMasterModelView MapMaster(InvoiceMaster t)
     {
-        return new InvoiceMasterModelView(t.Id, t.ClientId, t.Date, t.StatusView, t.Total, t.Details.Select(MapDetail));
-    }
-    private static InvoiceDetailModelView MapDetail(InvoiceDetail d)
-    {
-        return new InvoiceDetailModelView(d.ProductId, d.Quantity, d.Price, d.Total);
+        return new InvoiceMasterModelView(t.Id, t.ClientId, t.Date, t.StatusView, t.Total);
     }
     public record Request : IRequest<Response>;
     public record Response(IEnumerable<InvoiceMasterModelView> Invoices);
-    public record InvoiceMasterModelView(long Id, long ClientId, DateTime Date, string Status, decimal Total, IEnumerable<InvoiceDetailModelView> Details);
-    public record InvoiceDetailModelView(long ProductId, decimal Quantity, decimal Price, decimal Total);
+    public record InvoiceMasterModelView(long Id, long ClientId, DateTime Date, string Status, decimal Total);
 }
