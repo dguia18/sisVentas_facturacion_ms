@@ -4,16 +4,16 @@ using SysVentas.Facturacion.Domain;
 using SysVentas.Facturacion.Domain.Contracts;
 namespace SysVentas.Facturation.Application;
 
-public class GetInvoiceById : IRequestHandler<GetInvoiceById.Request, GetInvoiceById.Response>
+public class GetInvoiceById : IRequestHandler<GetInvoiceById.Request, GetInvoiceById.InvoiceMasterByIdModelView>
 {
     private readonly IUnitOfWork _unitOfWork;
     public GetInvoiceById(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-    public Task<Response> Handle(Request request, CancellationToken cancellationToken)
+    public Task<InvoiceMasterByIdModelView> Handle(Request request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(new Response(MapMaster(LoadInvoices(request.InvoiceId))));
+        return Task.FromResult((MapMaster(LoadInvoices(request.InvoiceId))));
     }
     private InvoiceMaster? LoadInvoices(long invoiceId)
     {
@@ -27,8 +27,7 @@ public class GetInvoiceById : IRequestHandler<GetInvoiceById.Request, GetInvoice
     {
         return new InvoiceDetailModelView(d.ProductId, d.Quantity, d.Price, d.Total);
     }
-    public record Request(long InvoiceId) : IRequest<Response>;
-    public record Response(InvoiceMasterByIdModelView Invoice);
+    public record Request(long InvoiceId) : IRequest<InvoiceMasterByIdModelView>;
     public record InvoiceMasterByIdModelView(long Id, long ClientId, DateTime Date, string Status, decimal Total, IEnumerable<InvoiceDetailModelView> Details);
     public record InvoiceDetailModelView(long ProductId, decimal Quantity, decimal Price, decimal Total);
     public class Validation : AbstractValidator<Request>
