@@ -37,5 +37,5 @@ public class CreateInvoice : IRequestHandler<CreateInvoice.Request,CreateInvoice
             public decimal Price { get; set; }
         }
     }
-    public record Response(string Mensaje);
+    public record Response(string Message);
 }

@@ -27,7 +27,9 @@ builder.Services.AddMediatR(Assembly.Load("SysVentas.Facturation.Application"));
 builder.Services.Configure<IProductService.ApisUrl>(
     opts => builder.Configuration.GetSection("ApiUrls").Bind(opts)
 );
-builder.Services.AddTransient (typeof (IPipelineBehavior<,>), typeof (ValidatorPipelineBehavior<,>));;
+builder.Services.AddTransient (typeof (IPipelineBehavior<,>), typeof (ValidatorPipelineBehavior<,>));
+builder.Services.AddCors();
+
 AssemblyScanner.FindValidatorsInAssembly(Assembly.Load("SysVentas.Facturation.Application")).ForEach(pair =>
 {
     builder.Services.Add(ServiceDescriptor.Scoped(pair.InterfaceType,pair.ValidatorType));
@@ -45,9 +47,9 @@ if (app.Environment.IsDevelopment())
 
 app.Services.CreateScope().ServiceProvider.GetRequiredService<FacturationDataContext>().Database.Migrate();
 
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors(options => options.WithOrigins(builder.Configuration["ApiGatewayUrl"]).AllowAnyMethod());
 
-app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 

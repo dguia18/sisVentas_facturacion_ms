@@ -31,5 +31,5 @@ public class CancelInvoice : IRequestHandler<CancelInvoice.Request, CancelInvoic
             .FindFirstOrDefault(t => t.Id == invoiceId, includeProperties: "Details");
     }
     public record Request(long InvoiceId) : IRequest<Response>;
-    public record Response(string Mensaje);
+    public record Response(string Message);
 }
