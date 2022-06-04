@@ -2,7 +2,7 @@ version: "3.3"
 services:
   web:    
     container_name: sisventas_facturacion_ms
-    image: "duvaninho/sisventas_facturacion_ms:latest"       
+    build: .
     environment:
       - ConnectionString= Server=sql.data;User=sa;Password=Pass@word;DataBase=Facturacion;
       - ApiUrls='{"ProductsUrl":"http://localhost:20002/"}'
