@@ -2,7 +2,7 @@ version: "3.3"
 services:
   web:    
     container_name: sisventas_facturacion_ms
-    build: .
+    image: ivancontry/sisventas_facturacion_ms:4.0
     environment:
       - ConnectionString= Server=sql.data;User=sa;Password=Pass@word;DataBase=Facturacion;
       - ApiUrls='{"ProductsUrl":"http://localhost:20002/"}'
